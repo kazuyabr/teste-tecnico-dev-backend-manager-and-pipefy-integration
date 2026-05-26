@@ -1,3 +1,4 @@
+import os
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -6,7 +7,7 @@ from app.db.database import Base, engine
 
 Base.metadata.create_all(bind=engine)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
 
 @asynccontextmanager
@@ -22,12 +23,21 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router, prefix=os.getenv("API_PREFIX", "/api/v1"))
 
 @app.get("/")
 async def root():
     return {
         "message": "Client Management & Pipefy Integration API",
         "docs": "/docs",
-        "health": "/api/v1/health"
+        "health": f"{os.getenv('API_PREFIX', '/api/v1')}/health"
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "main:app",
+        host=os.getenv("HOST", "127.0.0.1"),
+        port=int(os.getenv("PORT", "8001")),
+        reload=True
+    )

@@ -1,8 +1,10 @@
+import os
+
 class PipefyService:
     CREATE_CARD_MUTATION = """
     mutation {
       createCard(input: {
-        pipe_id: "PIPE_ID_HERE"
+        pipe_id: "%(pipe_id)s"
         fields_attributes: [
           { field_id: "field_nome_id", value: "%(cliente_nome)s" }
           { field_id: "field_email_id", value: "%(cliente_email)s" }
@@ -48,6 +50,7 @@ class PipefyService:
     @staticmethod
     def get_create_card_payload(client_data: dict) -> str:
         return PipefyService.CREATE_CARD_MUTATION % {
+            "pipe_id": os.getenv("PIPE_ID", "PIPE_ID_HERE"),
             "cliente_nome": client_data["cliente_nome"],
             "cliente_email": client_data["cliente_email"],
             "tipo_solicitacao": client_data["tipo_solicitacao"],
