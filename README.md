@@ -7,12 +7,13 @@ API desenvolvida em Python com FastAPI para gerenciar clientes e simular integra
 ## Funcionalidades
 
 - **Fluxo 1: Criação de Cliente e Mapeamento de Card**
+
   - Endpoint: POST `/api/v1/clientes`
   - Validação de dados de entrada
   - Persistência local em SQLite
   - Estruturação da mutation GraphQL para criação de card no Pipefy
-
 - **Fluxo 2: Atualização de Card (Simulação de Webhook)**
+
   - Endpoint: POST `/api/v1/webhooks/pipefy/card-updated`
   - Verificação de idempotência usando event_id
   - Regra de negócio: prioridade alta para patrimônio >= 200.000
@@ -39,28 +40,29 @@ API desenvolvida em Python com FastAPI para gerenciar clientes e simular integra
 ### Passos
 
 1. Clone o repositório:
+
    ```bash
    git clone [URL_DO_REPOSITORIO]
    cd teste-tecnico-dev-backend-manager-and-pipefy-integration
    ```
-
 2. Crie e ative um ambiente virtual:
+
    ```bash
    python -m venv venv
    venv\Scripts\activate
    ```
-
 3. Instale as dependências:
+
    ```bash
    pip install -r requirements.txt
    ```
-
 4. Execute a aplicação:
+
    ```bash
    uvicorn main:app --host 127.0.0.1 --port 8001 --reload
    ```
-
 5. Acesse a documentação:
+
    - Swagger UI: http://127.0.0.1:8001/docs
    - ReDoc: http://127.0.0.1:8001/redoc
 
@@ -127,7 +129,6 @@ requirements.txt
 
 ```bash
 pytest
-pytest --cov=app --cov-report=term-missing
 pytest app/tests/test_client.py
 ```
 
