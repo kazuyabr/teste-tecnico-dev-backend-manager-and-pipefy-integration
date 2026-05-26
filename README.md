@@ -57,7 +57,7 @@ API desenvolvida em Python com FastAPI para gerenciar clientes e simular integra
 
 4. Execute a aplicação:
    ```bash
-   venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8001 --reload
+   uvicorn main:app --host 127.0.0.1 --port 8001 --reload
    ```
 
 5. Acesse a documentação:
@@ -97,7 +97,7 @@ curl -X 'POST' \
 ### Health Check
 
 ```bash
-curl -X 'GET' 'http://localhost:8000/api/v1/health'
+curl -X 'GET' 'http://127.0.0.1:8001/api/v1/health'
 ```
 
 ## Estrutura do Projeto
@@ -130,6 +130,19 @@ pytest
 pytest --cov=app --cov-report=term-missing
 pytest app/tests/test_client.py
 ```
+
+## Visão de Produção (AWS)
+
+Para escalar esta aplicação na AWS, os serviços sugeridos são:
+
+- **API Gateway**: Expõe os endpoints REST de forma segura e escalável, com throttling e autenticação
+- **Lambda**: Executa o código FastAPI em serverless — sem gerenciar servidor, escala sob demanda
+- **RDS (PostgreSQL)** ou **DynamoDB**: Banco relacional para consultas complexas ou NoSQL para alta escalabilidade
+- **SQS**: Fila para processamento assíncrono de webhooks — evita perda de eventos se o Lambda estiver ocupado
+- **CloudWatch**: Monitoramento, logs estruturados e métricas de erro/latência
+- **Secrets Manager**: Armazenamento seguro das credenciais da API do Pipefy
+
+A arquitetura serverless (API Gateway + Lambda + SQS) garante que webhooks sejam processados em fila, sem perda, mesmo sob pico de requisições.
 
 ## Prazo de Entrega
 
